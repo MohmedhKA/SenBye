@@ -34,6 +34,11 @@ export interface RawAuctionRow {
   seller_contact?: string | null;
   winner_contact?: string | null;
   primary_photo?: string | null;
+  pickup_deadline?: Date | string | null;
+  seller_handover_at?: Date | string | null;
+  buyer_handover_at?: Date | string | null;
+  closed_at?: Date | string | null;
+  decided_at?: Date | string | null;
 }
 
 export interface RawBidRow {
@@ -134,6 +139,11 @@ export function toAuctionDetail(
         }
       : null,
     outcome_reason: row.outcome_reason || null,
+    pickup_deadline: row.pickup_deadline ? new Date(row.pickup_deadline).toISOString() : null,
+    seller_handover_at: row.seller_handover_at ? new Date(row.seller_handover_at).toISOString() : null,
+    buyer_handover_at: row.buyer_handover_at ? new Date(row.buyer_handover_at).toISOString() : null,
+    closed_at: row.closed_at ? new Date(row.closed_at).toISOString() : null,
+    decided_at: row.decided_at ? new Date(row.decided_at).toISOString() : null,
     counterparty_contact: counterpartyContact,
     server_time: new Date().toISOString(),
   };

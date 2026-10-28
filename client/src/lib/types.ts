@@ -71,6 +71,11 @@ export interface AuctionDetail extends AuctionSummary {
     name: string;
   } | null;
   outcome_reason: string | null;
+  pickup_deadline?: string | null;
+  seller_handover_at?: string | null;
+  buyer_handover_at?: string | null;
+  closed_at?: string | null;
+  decided_at?: string | null;
   counterparty_contact: string | null;
   server_time: string;
 }
