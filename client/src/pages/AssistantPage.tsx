@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import { apiFetch, ApiError } from '../lib/api.js';
@@ -23,6 +23,140 @@ const SUGGESTED_PROMPTS = [
   'Find engineering graphics drafter and T-scale',
   'Hostel study chair or desk lamp',
 ];
+
+interface ParsedAuctionLink {
+  title: string;
+  url: string;
+}
+
+function AssistantMessageContent({ content }: { content: string }) {
+  // Extract all auction links for quick action buttons
+  const auctionLinks: ParsedAuctionLink[] = [];
+  const linkMatches = content.matchAll(/\[([^\]]+)\]\(([^)]+)\)/g);
+  for (const match of linkMatches) {
+    if (match[2].includes('/auctions/')) {
+      auctionLinks.push({ title: match[1], url: match[2] });
+    }
+  }
+
+  // Also match raw /auctions/uuid if not inside markdown syntax
+  const rawAuctionMatches = content.matchAll(/(?<!\]\()(?:\/auctions\/[a-f0-9-]+)/g);
+  for (const match of rawAuctionMatches) {
+    if (!auctionLinks.some((l) => l.url === match[0])) {
+      auctionLinks.push({ title: 'View Auction Listing', url: match[0] });
+    }
+  }
+
+  // Split into lines to format lists cleanly
+  const lines = content.split('\n');
+
+  return (
+    <div className="space-y-1.5">
+      {lines.map((line, lineIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed) {
+          return <div key={lineIdx} className="h-1.5" />;
+        }
+
+        const isBullet = /^[*-]\s+/.test(trimmed);
+        const lineText = isBullet ? trimmed.replace(/^[*-]\s+/, '') : line;
+        const rendered = renderInlineFormatting(lineText);
+
+        if (isBullet) {
+          return (
+            <div key={lineIdx} className="flex items-start gap-2 pl-1 text-xs sm:text-sm">
+              <span className="text-orange-500 font-bold shrink-0 leading-relaxed">•</span>
+              <div className="flex-1 text-slate-800">{rendered}</div>
+            </div>
+          );
+        }
+
+        return (
+          <p key={lineIdx} className="text-xs sm:text-sm leading-relaxed text-slate-800">
+            {rendered}
+          </p>
+        );
+      })}
+
+      {/* Prominent Direct Action Buttons for any mentioned auctions */}
+      {auctionLinks.length > 0 && (
+        <div className="mt-3 pt-2.5 border-t border-slate-200 flex flex-wrap gap-2">
+          {auctionLinks.map((link, idx) => (
+            <Link
+              key={idx}
+              to={link.url}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all active:scale-95"
+            >
+              <span>View &amp; Bid: {link.title}</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function renderInlineFormatting(text: string): ReactNode[] {
+  // Regex to match [title](url) OR **bold**
+  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+  const elements: ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      elements.push(text.slice(lastIndex, match.index));
+    }
+
+    if (match[1] !== undefined && match[2] !== undefined) {
+      // Markdown link
+      const linkTitle = match[1];
+      const linkUrl = match[2];
+      const isInternal = linkUrl.startsWith('/');
+
+      if (isInternal) {
+        elements.push(
+          <Link
+            key={match.index}
+            to={linkUrl}
+            className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-900 border border-blue-200 transition-colors mx-0.5 align-baseline"
+          >
+            <span>{linkTitle}</span>
+            <ExternalLink className="w-3 h-3 text-blue-600 shrink-0" />
+          </Link>
+        );
+      } else {
+        elements.push(
+          <a
+            key={match.index}
+            href={linkUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline font-semibold hover:text-blue-800"
+          >
+            {linkTitle}
+          </a>
+        );
+      }
+    } else if (match[3] !== undefined) {
+      // Bold text
+      elements.push(
+        <strong key={match.index} className="font-bold text-slate-900">
+          {match[3]}
+        </strong>
+      );
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    elements.push(text.slice(lastIndex));
+  }
+
+  return elements;
+}
 
 export function AssistantPage() {
   const { user } = useAuth();
@@ -329,11 +463,15 @@ export function AssistantPage() {
                   <div
                     className={`max-w-[85%] rounded-2xl p-3.5 text-sm leading-relaxed ${
                       m.role === 'user'
-                        ? 'bg-blue-600 text-white rounded-tr-xs'
-                        : 'bg-slate-100 text-slate-800 rounded-tl-xs whitespace-pre-wrap'
+                        ? 'bg-blue-600 text-white rounded-tr-xs whitespace-pre-wrap'
+                        : 'bg-slate-100 text-slate-800 rounded-tl-xs'
                     }`}
                   >
-                    {m.content}
+                    {m.role === 'assistant' ? (
+                      <AssistantMessageContent content={m.content} />
+                    ) : (
+                      m.content
+                    )}
                     <div
                       className={`text-[10px] mt-1 text-right ${
                         m.role === 'user' ? 'text-blue-200' : 'text-slate-400'

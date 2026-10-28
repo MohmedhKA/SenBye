@@ -5,6 +5,7 @@ import { listAuctions, getAuctionDetail } from './auctionService.js';
 export interface WhitelistAuctionSummary {
   id: string;
   title: string;
+  url: string;
   category: string;
   condition: string;
   starting_price: number;
@@ -44,6 +45,7 @@ export function mapAuctionToWhitelistSummary(item: any): WhitelistAuctionSummary
   return {
     id: item.id,
     title: item.title,
+    url: `/auctions/${item.id}`,
     category: item.category,
     condition: item.condition,
     starting_price: item.starting_price,
