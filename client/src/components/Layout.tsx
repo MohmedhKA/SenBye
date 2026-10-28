@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
-import { Sparkles, PlusCircle, Gavel, Bell, BookmarkCheck } from 'lucide-react';
+import { NotificationBell } from './NotificationBell.js';
+import { Sparkles, PlusCircle, Gavel, BookmarkCheck } from 'lucide-react';
 
 export function Layout() {
   const { user } = useAuth();
@@ -61,13 +62,7 @@ export function Layout() {
 
             {user ? (
               <div className="flex items-center gap-3">
-                <Link
-                  to="/notifications"
-                  className="p-2 text-slate-500 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors relative"
-                  title="Notifications"
-                >
-                  <Bell className="w-5 h-5" />
-                </Link>
+                <NotificationBell />
                 <Link
                   to="/me/selling"
                   className="text-sm font-medium text-slate-700 hover:text-indigo-600"

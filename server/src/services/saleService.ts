@@ -3,6 +3,7 @@ import { HttpError } from '../errors.js';
 import { config } from '../config.js';
 import { getAuctionDetail } from './auctionService.js';
 import { broadcastAuctionEvent } from './sseHub.js';
+import { createNotification } from './notifier.js';
 
 export interface ClosedAuctionRecord {
   id: string;
@@ -59,6 +60,15 @@ export async function closeDueAuctions(): Promise<ClosedAuctionRecord[]> {
           [id, JSON.stringify({ status: 'unsold', reason: 'no_bids' })]
         );
 
+        await createNotification(
+          auction.seller_id,
+          'unsold',
+          `Auction Ended: ${auction.title}`,
+          'Your auction closed with no bids. You can relist anytime.',
+          id,
+          client
+        );
+
         closedRecord = {
           id,
           status: 'unsold',
@@ -84,6 +94,23 @@ export async function closeDueAuctions(): Promise<ClosedAuctionRecord[]> {
               winning_amount: auction.current_price,
             }),
           ]
+        );
+
+        await createNotification(
+          auction.leader_id,
+          'won_pending',
+          `You won ${auction.title}!`,
+          `Your bid of ₹${auction.current_price} won. Awaiting seller approval.`,
+          id,
+          client
+        );
+        await createNotification(
+          auction.seller_id,
+          'closed',
+          `Auction Closed: ${auction.title}`,
+          `Your auction closed with a winning bid of ₹${auction.current_price}. Please review and approve.`,
+          id,
+          client
         );
 
         closedRecord = {
@@ -150,6 +177,17 @@ export async function approveWinningBid(sellerId: string, auctionId: string) {
        VALUES ($1, 'approved', $2, json_build_object('hours', $3::int))`,
       [auctionId, sellerId, hours]
     );
+
+    if (auction.winner_id) {
+      await createNotification(
+        auction.winner_id,
+        'approved',
+        `Sale Approved: ${auction.title}`,
+        'The seller approved your bid. Pickup deadline is in 72 hours. Contact details are now available.',
+        auctionId,
+        client
+      );
+    }
   });
 
   const detail = await getAuctionDetail(auctionId, sellerId);
@@ -205,6 +243,17 @@ export async function rejectWinningBid(sellerId: string, auctionId: string, reas
        VALUES ($1, 'rejected', $2, $3)`,
       [auctionId, sellerId, JSON.stringify({ reason: reason.trim() })]
     );
+
+    if (auction.winner_id) {
+      await createNotification(
+        auction.winner_id,
+        'rejected',
+        `Bid Declined: ${auction.title}`,
+        `The seller declined the winning bid. Reason: "${reason.trim()}"`,
+        auctionId,
+        client
+      );
+    }
   });
 
   const detail = await getAuctionDetail(auctionId, sellerId);
@@ -270,6 +319,25 @@ export async function confirmHandover(userId: string, auctionId: string) {
          VALUES ($1, 'sold', $2, $3)`,
         [auctionId, userId, JSON.stringify({ completed_by: isSeller ? 'seller' : 'buyer' })]
       );
+
+      await createNotification(
+        auction.seller_id,
+        'sold',
+        `Exchange Completed: ${auction.title}`,
+        'Both parties confirmed the exchange. Transaction complete!',
+        auctionId,
+        client
+      );
+      if (auction.winner_id) {
+        await createNotification(
+          auction.winner_id,
+          'sold',
+          `Exchange Completed: ${auction.title}`,
+          'Both parties confirmed the exchange. Enjoy your item!',
+          auctionId,
+          client
+        );
+      }
     } else {
       // One party confirmed; record timestamp and await counterparty
       if (isSeller) {
@@ -295,6 +363,18 @@ export async function confirmHandover(userId: string, auctionId: string) {
          VALUES ($1, 'handover', $2, $3)`,
         [auctionId, userId, JSON.stringify({ party: isSeller ? 'seller' : 'buyer' })]
       );
+
+      const counterpartyId = isSeller ? auction.winner_id : auction.seller_id;
+      if (counterpartyId) {
+        await createNotification(
+          counterpartyId,
+          'handover',
+          `Handover Confirmed for ${auction.title}`,
+          `${isSeller ? 'Senior seller' : 'Winning buyer'} confirmed handover. Please confirm receipt to complete the exchange.`,
+          auctionId,
+          client
+        );
+      }
     }
   });
 
@@ -364,6 +444,18 @@ export async function reportFailedPickup(userId: string, auctionId: string, reas
         }),
       ]
     );
+
+    const counterpartyId = isSeller ? auction.winner_id : auction.seller_id;
+    if (counterpartyId) {
+      await createNotification(
+        counterpartyId,
+        'failed_pickup',
+        `Pickup Issue Reported: ${auction.title}`,
+        `A pickup issue was reported: "${reason.trim()}"`,
+        auctionId,
+        client
+      );
+    }
   });
 
   const detail = await getAuctionDetail(auctionId, userId);

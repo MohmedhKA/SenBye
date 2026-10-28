@@ -5,6 +5,7 @@ import { nextMinBid, extendedClose } from '../engine/rules.js';
 import { resolveAutoBids, type AutoBidCap } from '../engine/autoBid.js';
 import { getAuctionDetail } from './auctionService.js';
 import { broadcastAuctionEvent } from './sseHub.js';
+import { createNotification } from './notifier.js';
 
 export interface PlaceBidResult {
   bid: {
@@ -181,6 +182,28 @@ export async function placeBid(
         `INSERT INTO auction_events (auction_id, type, actor_id, data)
          VALUES ($1, 'extended', $2, $3)`,
         [auctionId, bidderId, JSON.stringify({ new_closes_at: finalClosesAt })]
+      );
+    }
+
+    // Notify seller of new bid
+    await createNotification(
+      auction.seller_id,
+      'new_bid',
+      `New bid on ${auction.title}: ₹${amount}`,
+      `A new bid of ₹${amount} was placed. Current leading price is ₹${currentPrice}.`,
+      auctionId,
+      client
+    );
+
+    // Notify previous leader if outbid
+    if (auction.leader_id && auction.leader_id !== currentLeader) {
+      await createNotification(
+        auction.leader_id,
+        'outbid',
+        `You were outbid on ${auction.title}!`,
+        `The leading bid has increased to ₹${currentPrice}. Raise your bid to stay in front!`,
+        auctionId,
+        client
       );
     }
   });
