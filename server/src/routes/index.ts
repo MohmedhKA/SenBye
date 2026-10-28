@@ -9,11 +9,14 @@ import { wantsRouter } from './wants.js';
 import { notificationsRouter } from './notifications.js';
 import { assistantRouter } from './assistant.js';
 import { streamRouter } from './stream.js';
+import { handleGetMyAuctions } from './auctions.js';
+import { requireAuth } from '../middleware/auth.js';
 
 export const apiRouter = Router();
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/meta', metaRouter);
+apiRouter.get('/me/auctions', requireAuth, handleGetMyAuctions);
 apiRouter.use('/auctions', bidsRouter);
 apiRouter.use('/auctions', saleRouter);
 apiRouter.use('/auctions', auctionsRouter);

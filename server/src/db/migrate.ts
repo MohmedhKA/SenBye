@@ -9,6 +9,9 @@ const __dirname = path.dirname(__filename);
 export async function runMigrations() {
   const client = await pool.connect();
   try {
+    // Acquire advisory lock to prevent concurrent migrations
+    await client.query('SELECT pg_advisory_lock(987654321);');
+
     // Ensure migrations tracking table exists
     await client.query(`
       CREATE TABLE IF NOT EXISTS _migrations (
@@ -45,6 +48,7 @@ export async function runMigrations() {
       }
     }
   } finally {
+    await client.query('SELECT pg_advisory_unlock(987654321);').catch(() => {});
     client.release();
   }
 }
