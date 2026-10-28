@@ -182,9 +182,9 @@ export function WantsPage() {
             setError(null);
             setSuccessMsg(null);
           }}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-xs transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-bold rounded-xl text-white bg-orange-600 hover:bg-orange-700 shadow-sm shadow-orange-600/25 transition-all"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 stroke-[2.5]" />
           {showAddForm ? 'Close Form' : 'New Saved Want'}
         </button>
       </div>
@@ -208,17 +208,17 @@ export function WantsPage() {
       {showAddForm && (
         <form
           onSubmit={handleCreateWant}
-          className="bg-white border border-indigo-100 rounded-2xl p-6 shadow-sm space-y-4 ring-2 ring-indigo-500/10"
+          className="bg-white border border-orange-200 rounded-2xl p-6 shadow-sm space-y-4 ring-2 ring-orange-500/10"
         >
           <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h2 className="text-base font-semibold text-slate-900">Create Item Alert</h2>
-            <span className="text-xs text-slate-500">Rules W1–W4</span>
+            <h2 className="text-base font-bold text-slate-900">Create Item Alert</h2>
+            <span className="text-xs text-slate-500 font-mono">Rules W1–W4</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Keywords */}
             <div className="md:col-span-2">
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
                 Keywords <span className="text-rose-500">*</span>
               </label>
               <input
@@ -226,21 +226,21 @@ export function WantsPage() {
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
                 placeholder="e.g. Casio scientific calculator, Hercules cycle, Drafter"
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
                 required
               />
               <span className="text-xs text-slate-500 mt-1 block">
-                Full-text search matches item titles and descriptions.
+                Full-text search matches item titles and descriptions automatically.
               </span>
             </div>
 
             {/* Category */}
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">Category (Optional)</label>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Category (Optional)</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                className="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c.value} value={c.value}>
@@ -255,11 +255,11 @@ export function WantsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
             {/* Max Budget */}
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
                 Max Budget (₹) <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-2 text-sm text-slate-400 font-medium">₹</span>
+                <span className="absolute left-3.5 top-2 text-sm text-slate-400 font-bold">₹</span>
                 <input
                   type="number"
                   min="1"
@@ -267,7 +267,7 @@ export function WantsPage() {
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(e.target.value)}
                   placeholder="e.g. 1500"
-                  className="w-full pl-7 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  className="w-full pl-8 pr-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white font-bold"
                   required
                 />
               </div>
@@ -276,18 +276,18 @@ export function WantsPage() {
               </span>
             </div>
 
-            <div className="md:col-span-2 flex items-end justify-end gap-2">
+            <div className="md:col-span-2 flex flex-col sm:flex-row items-stretch sm:items-end justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 text-sm font-medium rounded-lg text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors"
+                className="px-4 py-2 text-sm font-semibold rounded-xl text-slate-700 bg-slate-100 hover:bg-slate-200 transition-colors text-center"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-1.5 px-5 py-2 text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-xs"
+                className="inline-flex items-center justify-center gap-1.5 px-5 py-2 text-sm font-bold rounded-xl text-white bg-orange-600 hover:bg-orange-700 disabled:opacity-50 transition-all shadow-xs whitespace-nowrap"
               >
                 {isSubmitting ? 'Saving...' : 'Save & Check Matches'}
               </button>
@@ -325,7 +325,7 @@ export function WantsPage() {
                   setMaxPrice('1000');
                   setShowAddForm(true);
                 }}
-                className="text-xs px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 hover:border-indigo-300 hover:text-indigo-600 transition-colors"
+                className="text-xs px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600 font-medium transition-all"
               >
                 + {tag}
               </button>
@@ -354,12 +354,12 @@ export function WantsPage() {
                           {want.keywords}
                         </span>
                         {want.category && (
-                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                          <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
                             {formatCategory(want.category)}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm font-semibold text-indigo-600">
+                      <p className="text-sm font-bold text-blue-600">
                         Budget: Up to {formatRupees(want.max_price)}
                       </p>
                     </div>
@@ -376,7 +376,7 @@ export function WantsPage() {
                 </div>
 
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 font-medium">
                     <Clock className="w-3.5 h-3.5" />
                     <span>Added {formatRelativeTime(want.created_at)}</span>
                   </div>
@@ -394,7 +394,7 @@ export function WantsPage() {
                     ) : (
                       <Link
                         to={browseUrl}
-                        className="inline-flex items-center gap-1 font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+                        className="inline-flex items-center gap-1 font-semibold text-slate-600 hover:text-blue-600 transition-colors"
                       >
                         <span>Search now</span>
                         <ExternalLink className="w-2.5 h-2.5" />

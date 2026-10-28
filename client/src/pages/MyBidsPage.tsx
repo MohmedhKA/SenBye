@@ -79,21 +79,21 @@ export function MyBidsPage() {
 
         <Link
           to="/"
-          className="self-start sm:self-auto px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg text-sm font-semibold transition-colors"
+          className="self-start sm:self-auto px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-sm font-bold transition-all border border-blue-200"
         >
-          🔍 Browse More Items
+          🔍 Browse More Gear
         </Link>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1 text-xs">
+      <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 text-xs">
         <button
           type="button"
           onClick={() => setFilter('all')}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
             filter === 'all'
-              ? 'bg-gray-900 text-white'
-              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              ? 'bg-slate-900 text-white shadow-xs'
+              : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
           }`}
         >
           All ({auctions.length})
@@ -101,10 +101,10 @@ export function MyBidsPage() {
         <button
           type="button"
           onClick={() => setFilter('leading')}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
             filter === 'leading'
-              ? 'bg-emerald-600 text-white'
-              : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200'
           }`}
         >
           🏆 Leading ({auctions.filter((a) => a.status === 'open' && a.leader_name === user.name).length})
@@ -112,10 +112,10 @@ export function MyBidsPage() {
         <button
           type="button"
           onClick={() => setFilter('outbid')}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
             filter === 'outbid'
-              ? 'bg-red-600 text-white'
-              : 'bg-red-50 hover:bg-red-100 text-red-800'
+              ? 'bg-orange-600 text-white shadow-xs'
+              : 'bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-200'
           }`}
         >
           ⚠️ Outbid ({auctions.filter((a) => a.status === 'open' && a.leader_name !== user.name).length})
@@ -123,10 +123,10 @@ export function MyBidsPage() {
         <button
           type="button"
           onClick={() => setFilter('ended')}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors ${
+          className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
             filter === 'ended'
-              ? 'bg-gray-700 text-white'
-              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              ? 'bg-slate-700 text-white shadow-xs'
+              : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
           }`}
         >
           Closed ({auctions.filter((a) => a.status !== 'open').length})
@@ -141,22 +141,22 @@ export function MyBidsPage() {
 
       {/* Items List */}
       {isLoading ? (
-        <div className="py-12 text-center text-gray-500">
+        <div className="py-12 text-center text-slate-500">
           <div className="inline-block animate-spin text-2xl mb-2">🔄</div>
           <p className="text-sm">Loading your bids...</p>
         </div>
       ) : filteredAuctions.length === 0 ? (
-        <div className="py-16 text-center bg-gray-50 rounded-2xl border border-gray-200 p-8 space-y-3">
+        <div className="py-16 text-center bg-slate-50 rounded-2xl border border-slate-200 p-8 space-y-3">
           <span className="text-4xl">🏷️</span>
-          <h3 className="text-base font-bold text-gray-800">No auctions match this filter</h3>
-          <p className="text-xs text-gray-500 max-w-sm mx-auto">
+          <h3 className="text-base font-bold text-slate-800">No auctions match this filter</h3>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
             You haven’t placed any bids that match this view. Check the active catalog to place your first bid!
           </p>
           <Link
             to="/"
-            className="inline-block mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-colors"
+            className="inline-block mt-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-xs transition-colors"
           >
-            Explore Listings
+            Explore Campus Listings
           </Link>
         </div>
       ) : (
@@ -166,7 +166,7 @@ export function MyBidsPage() {
             const isClosed = auction.status !== 'open';
 
             let statusBadge = (
-              <span className="px-2.5 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-md">
+              <span className="px-2.5 py-1 bg-orange-100 border border-orange-200 text-orange-800 text-xs font-bold rounded-lg">
                 ⚠️ Outbid
               </span>
             );
@@ -233,7 +233,7 @@ export function MyBidsPage() {
                 </div>
 
                 {/* Status & Action */}
-                <div className="flex flex-col items-center sm:items-end gap-2.5 flex-shrink-0">
+                <div className="flex flex-col items-center sm:items-end gap-2.5 flex-shrink-0 w-full sm:w-auto">
                   <div className="flex items-center gap-2">
                     {statusBadge}
                   </div>
@@ -242,7 +242,7 @@ export function MyBidsPage() {
 
                   <Link
                     to={`/auctions/${auction.id}`}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors"
+                    className="w-full sm:w-auto text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition-colors whitespace-nowrap"
                   >
                     {isClosed ? 'View Result' : isLeading ? 'View Auction' : 'Increase Bid ⚡'}
                   </Link>

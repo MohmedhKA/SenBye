@@ -5,7 +5,6 @@ import { apiFetch } from '../lib/api.js';
 import { AuctionCard } from '../components/AuctionCard.js';
 import {
   Search,
-  SlidersHorizontal,
   ChevronLeft,
   ChevronRight,
   X,
@@ -17,10 +16,8 @@ import {
   FlaskConical,
   LayoutGrid,
   Zap,
-  ShieldCheck,
   Plus,
   BookmarkCheck,
-  ArrowUpDown,
 } from 'lucide-react';
 
 interface CategoryItem {
@@ -156,17 +153,17 @@ export function BrowsePage() {
               Every bid inside the final 30 seconds triggers the anti-sniping extension (+60s). Inspect cycles, calculators, and hostel gear in person before dual-confirmation handover.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <Link
                 to="/sell/new"
-                className="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm shadow-lg shadow-orange-600/30 flex items-center gap-2 transition-all active:scale-95"
+                className="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm shadow-lg shadow-orange-600/30 flex items-center justify-center gap-2 transition-all active:scale-95 whitespace-nowrap"
               >
                 <Plus className="w-4 h-4 stroke-[2.5]" />
                 <span>Sell Your Gear</span>
               </Link>
               <Link
                 to="/wants"
-                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-sm border border-white/15 flex items-center gap-2 transition-all"
+                className="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-sm border border-white/15 flex items-center justify-center gap-2 transition-all whitespace-nowrap"
               >
                 <BookmarkCheck className="w-4 h-4 text-orange-400" />
                 <span>Create Saved Want</span>
@@ -175,10 +172,10 @@ export function BrowsePage() {
           </div>
 
           {/* Live Campus Pulse Card */}
-          <div className="lg:col-span-4 bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10 space-y-4">
+          <div className="lg:col-span-4 bg-white/5 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <span className="text-xs font-mono uppercase tracking-wider text-slate-300 font-semibold">
-                Campus Marketplace Pulse
+                Campus Pulse
               </span>
               <span className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -186,22 +183,22 @@ export function BrowsePage() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                <div className="text-2xl font-mono font-bold text-white">{total}</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">Active Campus Listings</div>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="text-xl sm:text-2xl font-mono font-bold text-white">{total}</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 leading-tight">Active Listings</div>
               </div>
-              <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                <div className="text-2xl font-mono font-bold text-orange-400">+60s</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">Anti-Snipe Guard</div>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="text-xl sm:text-2xl font-mono font-bold text-orange-400">+60s</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 leading-tight">Anti-Snipe Guard</div>
               </div>
-              <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                <div className="text-2xl font-mono font-bold text-emerald-400">100%</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">In-Person Dual Sign</div>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="text-xl sm:text-2xl font-mono font-bold text-emerald-400">100%</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 leading-tight">In-Person Dual Sign</div>
               </div>
-              <div className="p-3 rounded-xl bg-white/5 border border-white/5">
-                <div className="text-2xl font-mono font-bold text-blue-400">₹0</div>
-                <div className="text-[11px] text-slate-400 mt-0.5">Platform Middleman Fee</div>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white/5 border border-white/5">
+                <div className="text-xl sm:text-2xl font-mono font-bold text-blue-400">₹0</div>
+                <div className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5 leading-tight">Platform Fee</div>
               </div>
             </div>
           </div>

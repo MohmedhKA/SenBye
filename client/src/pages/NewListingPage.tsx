@@ -427,9 +427,9 @@ export function NewListingPage() {
               ))}
 
               {photos.length < 5 && (
-                <label className="w-24 h-24 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/50 transition-colors">
+                <label className="w-24 h-24 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-colors">
                   <Upload className="w-6 h-6 text-slate-400 mb-1" />
-                  <span className="text-xs text-slate-500">Add Photo</span>
+                  <span className="text-xs text-slate-500 font-medium">Add Photo</span>
                   <input
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
@@ -459,7 +459,7 @@ export function NewListingPage() {
                 <button
                   type="button"
                   onClick={addFaq}
-                  className="flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-700"
+                  className="flex items-center gap-1 text-xs font-semibold text-orange-600 hover:text-orange-700"
                 >
                   <Plus className="w-4 h-4" /> Add FAQ
                 </button>
@@ -468,7 +468,7 @@ export function NewListingPage() {
 
             <div className="space-y-3 mt-3">
               {faqs.map((faq, i) => (
-                <div key={i} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2 relative">
+                <div key={i} className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 relative">
                   <button
                     type="button"
                     onClick={() => removeFaq(i)}
@@ -481,14 +481,14 @@ export function NewListingPage() {
                     placeholder="Question (e.g. Are the cycle gears working?)"
                     value={faq.question}
                     onChange={(e) => updateFaq(i, 'question', e.target.value)}
-                    className="w-full pr-8 px-2.5 py-1.5 bg-white border border-slate-200 rounded-md text-xs sm:text-sm focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+                    className="w-full pr-8 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                   />
                   <input
                     type="text"
                     placeholder="Answer (e.g. Yes, Shimano 21 gears recently serviced.)"
                     value={faq.answer}
                     onChange={(e) => updateFaq(i, 'answer', e.target.value)}
-                    className="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-md text-xs sm:text-sm focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                   />
                 </div>
               ))}
@@ -497,17 +497,17 @@ export function NewListingPage() {
         )}
 
         {/* Submit Button */}
-        <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+        <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
           <Link
             to={isEditMode ? `/auctions/${id}` : '/'}
-            className="px-4 py-2 border border-slate-300 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition-colors"
+            className="px-4 py-2.5 border border-slate-300 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 transition-colors text-center"
           >
             Cancel
           </Link>
           <button
             type="submit"
             disabled={submitting}
-            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white text-sm font-bold rounded-xl shadow-sm shadow-orange-600/25 transition-all disabled:opacity-50 text-center whitespace-nowrap"
           >
             {submitting ? 'Saving...' : isEditMode ? 'Update Listing' : 'Publish Auction'}
           </button>

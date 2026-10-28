@@ -1,6 +1,15 @@
-# SenBye — Campus Auction Marketplace
+<p align="center">
+  <img src="client/public/logo-mark.png" alt="SenBye Logo" width="130" />
+</p>
 
-> Where graduating seniors pass down valuable campus gear to juniors through fair, transparent, and anti-sniped auctions.
+<h1 align="center">SenBye — Campus Auction Marketplace</h1>
+
+<p align="center">
+  <strong>“Seniors move on. Good stuff moves forward.”</strong><br/>
+  <em>Where graduating seniors pass down valuable campus gear to juniors through fair, transparent, and anti-sniped auctions.</em>
+</p>
+
+---
 
 **SenBye** solves the chaotic end-of-semester campus rush when graduating seniors need to pass down bicycles, scientific calculators, engineering textbooks, lab gear, and hostel appliances to incoming juniors. Instead of unorganized WhatsApp group spam or unfair backroom deals, SenBye provides a competitive, transparent, and verified campus auction platform.
 

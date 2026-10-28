@@ -153,9 +153,9 @@ export const NotificationBell: React.FC = () => {
         aria-label="Notifications"
         title="Notifications"
       >
-        <Bell className="w-5 h-5" />
+        <Bell className="w-5 h-5 text-slate-700" />
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-red-600 text-white text-[10px] font-black rounded-full ring-2 ring-white">
+          <span className="absolute top-0.5 right-0.5 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-orange-600 text-white text-[10px] font-mono font-bold rounded-full ring-2 ring-white shadow-xs">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -163,13 +163,13 @@ export const NotificationBell: React.FC = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 overflow-hidden">
           {/* Header */}
-          <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+          <div className="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-gray-900 text-sm">Notifications</span>
+              <span className="font-bold text-slate-900 text-sm">Campus Alerts</span>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 bg-red-100 text-red-800 text-[10px] font-bold rounded-full">
+                <span className="px-2 py-0.5 bg-orange-100 text-orange-800 text-[10px] font-bold rounded-full border border-orange-200">
                   {unreadCount} new
                 </span>
               )}

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.js';
 import { ApiError } from '../lib/api.js';
+import { Logo } from '../components/Logo.js';
+import { ShieldCheck } from 'lucide-react';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -30,55 +32,64 @@ export function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white p-8 border border-slate-200 rounded-xl shadow-xs">
-      <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign in to SenBye</h2>
-      <p className="text-sm text-slate-600 mb-6">Enter your campus email and password to bid and sell.</p>
+    <div className="max-w-md mx-auto mt-8 sm:mt-12 bg-white p-8 border border-slate-200/90 rounded-2xl shadow-sm space-y-6">
+      <div className="text-center space-y-2">
+        <div className="flex justify-center">
+          <Logo variant="stacked" size="md" withTagline={true} />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 pt-2">Sign in to your campus account</h2>
+        <p className="text-xs text-slate-500">Enter your student email and password to bid and sell.</p>
+      </div>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
+        <div className="p-3.5 bg-rose-50 text-rose-700 text-xs rounded-xl border border-rose-200 font-medium">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Email address</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Email address
+          </label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             placeholder="student@campus.edu"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Password
+          </label>
           <input
             type="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
           />
         </div>
 
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-xs transition-colors disabled:opacity-50"
+          className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm shadow-blue-600/20 transition-all disabled:opacity-50 text-sm active:scale-98"
         >
           {submitting ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-600">
-        Don&apos;t have an account?{' '}
-        <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
-          Register here
+      <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-500">
+        New to campus?{' '}
+        <Link to="/register" className="text-orange-600 hover:text-orange-700 font-bold">
+          Register student account &rarr;
         </Link>
-      </p>
+      </div>
     </div>
   );
 }
@@ -117,19 +128,26 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 bg-white p-8 border border-slate-200 rounded-xl shadow-xs">
-      <h2 className="text-2xl font-bold text-slate-900 mb-2">Create your account</h2>
-      <p className="text-sm text-slate-600 mb-6">Join your campus auction to buy and sell items fairly.</p>
+    <div className="max-w-md mx-auto mt-8 sm:mt-12 bg-white p-8 border border-slate-200/90 rounded-2xl shadow-sm space-y-6">
+      <div className="text-center space-y-2">
+        <div className="flex justify-center">
+          <Logo variant="stacked" size="md" withTagline={true} />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900 pt-2">Create Student Account</h2>
+        <p className="text-xs text-slate-500">Join SenBye to bid on graduating seniors&apos; gear fairly.</p>
+      </div>
 
       {error && (
-        <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-200">
+        <div className="p-3.5 bg-rose-50 text-rose-700 text-xs rounded-xl border border-rose-200 font-medium">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Display Name (Public)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Display Name (Public)
+          </label>
           <input
             type="text"
             required
@@ -137,64 +155,72 @@ export function RegisterPage() {
             maxLength={60}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. Alex (Batch 2026)"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            placeholder="e.g. Rahul Sharma (ECE 2nd Yr)"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Email address</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Campus Email Address
+          </label>
           <input
             type="email"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             placeholder="student@campus.edu"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Password (min 8 chars)</label>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Password (min 8 chars)
+          </label>
           <input
             type="password"
             required
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">
-            Hostel / Pickup Contact Info <span className="text-xs text-slate-500 font-normal">(Private until sold)</span>
+          <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+            Hostel / Room Pickup Contact <span className="text-slate-400 font-normal lowercase">(private until won)</span>
           </label>
           <input
             type="text"
             maxLength={100}
             value={contact}
             onChange={(e) => setContact(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
-            placeholder="e.g. Hostel C Room 302 / Phone"
+            className="w-full px-3.5 py-2.5 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-300 rounded-xl text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+            placeholder="e.g. Hostel 7 Room 304 / +91-98765-XXXXX"
           />
+          <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Guaranteed private: Only revealed to your approved buyer/seller upon auction close (Rule S2).</span>
+          </p>
         </div>
 
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-xs transition-colors disabled:opacity-50"
+          className="w-full py-2.5 px-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-sm shadow-orange-600/20 transition-all disabled:opacity-50 text-sm active:scale-98"
         >
-          {submitting ? 'Creating account...' : 'Register'}
+          {submitting ? 'Creating account...' : 'Complete Registration'}
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-slate-600">
-        Already have an account?{' '}
-        <Link to="/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
-          Sign in
+      <div className="pt-2 border-t border-slate-100 text-center text-xs text-slate-500">
+        Already have a student account?{' '}
+        <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold">
+          Sign in here &rarr;
         </Link>
-      </p>
+      </div>
     </div>
   );
 }

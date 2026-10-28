@@ -130,12 +130,12 @@ export const SellerActions: React.FC<SellerActionsProps> = ({
           </div>
 
           {isSeller ? (
-            <div className="pt-2 border-t border-amber-200/60 flex flex-wrap items-center gap-3">
+            <div className="pt-2 border-t border-amber-200/60 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
               <button
                 type="button"
                 onClick={handleApprove}
                 disabled={loading}
-                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                className="w-full sm:w-auto px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs text-center justify-center whitespace-nowrap"
               >
                 {loading ? 'Approving...' : '✓ Approve Winning Bid'}
               </button>
@@ -143,7 +143,7 @@ export const SellerActions: React.FC<SellerActionsProps> = ({
                 type="button"
                 onClick={() => setShowRejectModal(true)}
                 disabled={loading}
-                className="px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold rounded-xl transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold rounded-xl transition-colors text-center justify-center whitespace-nowrap"
               >
                 ✕ Reject Bid with Reason
               </button>
@@ -240,14 +240,14 @@ export const SellerActions: React.FC<SellerActionsProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-blue-100">
-            <div>
+          <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 border-t border-blue-100">
+            <div className="w-full sm:w-auto">
               {isSeller && !auction.seller_handover_at && (
                 <button
                   type="button"
                   onClick={handleHandover}
                   disabled={loading}
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                  className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs text-center justify-center whitespace-nowrap"
                 >
                   {loading ? 'Confirming...' : '🤝 I Handed Over the Item'}
                 </button>
@@ -258,14 +258,14 @@ export const SellerActions: React.FC<SellerActionsProps> = ({
                   type="button"
                   onClick={handleHandover}
                   disabled={loading}
-                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+                  className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white text-xs font-bold rounded-xl transition-colors shadow-xs text-center justify-center whitespace-nowrap"
                 >
                   {loading ? 'Confirming...' : '🤝 I Received the Item'}
                 </button>
               )}
 
               {((isSeller && auction.seller_handover_at) || (isWinner && auction.buyer_handover_at)) && (
-                <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1.5 rounded-lg inline-block">
+                <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1.5 rounded-lg inline-block text-center sm:text-left">
                   ✓ You have confirmed handover. Awaiting counterparty.
                 </span>
               )}
@@ -276,7 +276,7 @@ export const SellerActions: React.FC<SellerActionsProps> = ({
                 type="button"
                 onClick={() => setShowFailedModal(true)}
                 disabled={loading}
-                className="text-xs text-red-600 hover:text-red-700 underline font-medium"
+                className="text-xs text-red-600 hover:text-red-700 underline font-medium text-center sm:text-right"
               >
                 Report Pickup Issue / Failed Pickup
               </button>

@@ -123,19 +123,20 @@ export function AuctionPage() {
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Extension alert banner */}
       {extensionFlash && (
-        <div className="p-3 bg-amber-500 text-white text-center font-bold text-sm rounded-lg shadow-md animate-bounce">
-          ⚡ Anti-Sniping Triggered! Closing time extended by 60 seconds!
+        <div className="p-4 bg-orange-600 text-white text-center font-bold text-sm rounded-2xl shadow-lg shadow-orange-600/30 flex items-center justify-center gap-2 animate-bounce">
+          <span>⚡</span>
+          <span>Anti-Sniping Triggered! Closing time extended by +60 seconds! (Rule E1)</span>
         </div>
       )}
 
       {/* Breadcrumb & Navigation */}
-      <div className="flex items-center justify-between text-xs text-gray-500">
-        <div className="flex items-center gap-1.5">
-          <Link to="/" className="hover:underline text-blue-600">Auctions</Link>
+      <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="flex items-center gap-1.5 font-medium">
+          <Link to="/" className="hover:underline text-blue-600 font-semibold">Campus Auctions</Link>
           <span>/</span>
           <span className="capitalize">{formatCategory(auction.category)}</span>
           <span>/</span>
-          <span className="text-gray-900 font-medium truncate max-w-xs">{auction.title}</span>
+          <span className="text-slate-900 font-bold truncate max-w-xs">{auction.title}</span>
         </div>
 
         {isSeller && auction.bid_count === 0 && auction.status === 'open' && (

@@ -253,14 +253,14 @@ export function QASection({ auctionId, sellerId, currentUser }: QASectionProps) 
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
             <span className="text-[11px] text-slate-500">
               URLs prohibited · Max 3 unanswered questions · 10/hr
             </span>
             <button
               type="submit"
               disabled={isAsking || askBody.trim().length < 5}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-xs"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-xs whitespace-nowrap self-start sm:self-auto"
             >
               <Send className="w-3 h-3" />
               {isAsking ? 'Posting...' : 'Ask Question'}

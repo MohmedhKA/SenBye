@@ -204,7 +204,7 @@ export const BidPanel: React.FC<BidPanelProps> = ({
             <button
               type="submit"
               disabled={isLeader || isSubmittingManual || manualAmount < auction.min_next_bid}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-bold rounded-xl transition-all shadow-xs text-sm"
+              className="px-4 sm:px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white font-bold rounded-xl transition-all shadow-xs text-xs sm:text-sm whitespace-nowrap shrink-0"
             >
               {isSubmittingManual ? 'Bidding...' : 'Bid Now'}
             </button>
@@ -271,7 +271,7 @@ export const BidPanel: React.FC<BidPanelProps> = ({
             <button
               type="submit"
               disabled={isSubmittingAuto || Boolean(myAutoBid && autoAmount <= myAutoBid.max_amount)}
-              className="px-5 py-2 bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300 text-white font-bold rounded-xl transition-all shadow-xs text-sm"
+              className="px-3.5 sm:px-5 py-2 bg-orange-600 hover:bg-orange-700 disabled:bg-slate-300 text-white font-bold rounded-xl transition-all shadow-xs text-xs sm:text-sm whitespace-nowrap shrink-0"
             >
               {isSubmittingAuto ? 'Saving...' : myAutoBid ? 'Raise Max' : 'Set Auto-Bid'}
             </button>

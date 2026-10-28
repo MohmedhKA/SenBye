@@ -68,9 +68,9 @@ export const Countdown: React.FC<CountdownProps> = ({
           </span>
         )}
         {isExtensionWindow && (
-          <span className="px-3 py-1 bg-orange-600 text-white text-xs font-bold rounded-lg animate-pulse shadow-sm flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5" />
-            <span>&lt;30s Anti-Snipe (+60s per bid)</span>
+          <span className="px-2.5 sm:px-3 py-1 bg-orange-600 text-white text-[11px] sm:text-xs font-bold rounded-lg animate-pulse shadow-sm flex items-center gap-1 whitespace-nowrap">
+            <Zap className="w-3.5 h-3.5 shrink-0" />
+            <span>&lt;30s Anti-Snipe (+60s/bid)</span>
           </span>
         )}
       </div>
