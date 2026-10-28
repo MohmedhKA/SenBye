@@ -159,4 +159,129 @@ describe('Integration: Wants & Questions (I-09, I-10)', () => {
     const wantsAfterDelete = await listWants(buyer.id);
     expect(wantsAfterDelete).toHaveLength(0);
   });
+
+  it('I-10: Q&A anti-spam limits (duplicate, rate limit, url block) and pg_trgm similarity (Rules Q1–Q8)', async () => {
+    const { user: seller } = await registerUser({
+      name: 'Seller Alice',
+      email: 'alice.qa@campus.edu',
+      password: 'password123',
+    });
+
+    const { user: buyerBob } = await registerUser({
+      name: 'Buyer Bob',
+      email: 'bob.qa@campus.edu',
+      password: 'password123',
+    });
+
+    const auction = await createAuction(
+      seller.id,
+      {
+        title: 'Drafting Board and T-Scale Set',
+        category: 'other',
+        starting_price: 600,
+        min_increment: 50,
+        condition: 'good',
+        description: 'Complete engineering graphics set for first year',
+        closes_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      },
+      ['drafting.jpg']
+    );
+
+    const {
+      askQuestion,
+      findSimilarQuestions,
+      answerQuestion,
+      toggleFaq,
+      hideQuestion,
+      listQuestions,
+    } = await import('../../src/services/questionsService.js');
+
+    // 1. Rule Q1: Seller cannot ask on their own auction
+    await expect(
+      askQuestion(seller.id, auction.id, 'Can I ask myself a question?')
+    ).rejects.toMatchObject({
+      code: 'OWN_AUCTION',
+      statusCode: 403,
+    });
+
+    // 2. Rule Q2: URL block
+    await expect(
+      askQuestion(buyerBob.id, auction.id, 'Check this link http://cheaperdeals.com for discount')
+    ).rejects.toMatchObject({
+      code: 'VALIDATION',
+      statusCode: 400,
+    });
+    await expect(
+      askQuestion(buyerBob.id, auction.id, 'Visit www.mysite.com please')
+    ).rejects.toMatchObject({
+      code: 'VALIDATION',
+      statusCode: 400,
+    });
+
+    // 3. Valid question 1
+    const q1 = await askQuestion(buyerBob.id, auction.id, 'Are clips and clamps included?');
+    expect(q1.id).toBeDefined();
+    expect(q1.is_faq).toBe(false);
+
+    // Verify seller received question notification (Rule Q8)
+    const sellerNotifs = await listNotifications(seller.id);
+    expect(sellerNotifs.items).toHaveLength(1);
+    expect(sellerNotifs.items[0].type).toBe('question');
+
+    // 4. Rule Q4: Exact duplicate rejection
+    await expect(
+      askQuestion(buyerBob.id, auction.id, '   are clips and   clamps included?   ')
+    ).rejects.toMatchObject({
+      code: 'DUPLICATE_QUESTION',
+      statusCode: 409,
+    });
+
+    // 5. Rule Q5: pg_trgm similarity search
+    const similar = await findSimilarQuestions(auction.id, 'clips and clamps');
+    expect(similar.length).toBeGreaterThanOrEqual(1);
+    expect(similar[0].id).toBe(q1.id);
+
+    // 6. Rule Q3: Limit <= 3 unanswered questions per user per auction
+    const q2 = await askQuestion(buyerBob.id, auction.id, 'What is the board dimension?');
+    const q3 = await askQuestion(buyerBob.id, auction.id, 'Is the T-scale wooden or acrylic?');
+
+    // 4th unanswered question should be rate-limited
+    await expect(
+      askQuestion(buyerBob.id, auction.id, 'Can you deliver to Hostel 5?')
+    ).rejects.toMatchObject({
+      code: 'RATE_LIMITED',
+      statusCode: 429,
+    });
+
+    // 7. Rule Q6, Q8: Seller answers a question
+    const answeredQ1 = await answerQuestion(seller.id, q1.id, 'Yes, 4 metal board clips are included.');
+    expect(answeredQ1.answer).toBe('Yes, 4 metal board clips are included.');
+    expect(answeredQ1.answered_at).toBeDefined();
+
+    // Verify buyer received answer notification (Rule Q8)
+    const buyerNotifs = await listNotifications(buyerBob.id);
+    expect(buyerNotifs.items.some((n) => n.type === 'answer')).toBe(true);
+
+    // Now buyer has only 2 unanswered questions, so they can ask another question
+    const q4 = await askQuestion(buyerBob.id, auction.id, 'Can you deliver to Hostel 5?');
+    expect(q4.id).toBeDefined();
+
+    // 8. Rule Q6: Seller toggles FAQ (pinned first)
+    await toggleFaq(seller.id, q1.id, true);
+
+    const publicQuestions = await listQuestions(auction.id, null);
+    expect(publicQuestions[0].id).toBe(q1.id); // Pinned FAQ appears first!
+    expect(publicQuestions[0].is_faq).toBe(true);
+
+    // 9. Rule Q6: Seller hides a question
+    await hideQuestion(seller.id, q2.id);
+
+    // Public list excludes hidden question
+    const publicListAfterHide = await listQuestions(auction.id, null);
+    expect(publicListAfterHide.some((q) => q.id === q2.id)).toBe(false);
+
+    // Seller list includes hidden question
+    const sellerList = await listQuestions(auction.id, seller.id);
+    expect(sellerList.some((q) => q.id === q2.id)).toBe(true);
+  });
 });

@@ -9,6 +9,7 @@ import { Countdown } from '../components/Countdown.js';
 import { BidPanel } from '../components/BidPanel.js';
 import { BidHistory } from '../components/BidHistory.js';
 import { SellerActions } from '../components/SellerActions.js';
+import { QASection } from '../components/QASection.js';
 import { formatRupees, formatCondition, formatCategory, formatRelativeTime, photoUrl } from '../lib/format.js';
 
 export function AuctionPage() {
@@ -267,6 +268,13 @@ export function AuctionPage() {
               )}
             </div>
           )}
+
+          {/* Public Anti-Spam Q&A Thread (Rules Q1–Q8) */}
+          <QASection
+            auctionId={auction.id}
+            sellerId={auction.seller.id}
+            currentUser={user}
+          />
         </div>
 
         {/* Right Column (Live Bidding Controls & History) */}

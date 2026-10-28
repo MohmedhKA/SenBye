@@ -170,3 +170,35 @@ export function toWant(row: any): WantDTO {
     matches_count: row.matches_count !== undefined ? Number(row.matches_count) : 0,
   };
 }
+
+export interface QuestionDTO {
+  id: number;
+  auction_id: string;
+  asker: {
+    id: string;
+    name: string;
+  };
+  body: string;
+  answer: string | null;
+  answered_at: string | null;
+  is_faq: boolean;
+  status: 'visible' | 'hidden';
+  created_at: string;
+}
+
+export function toQuestion(row: any): QuestionDTO {
+  return {
+    id: Number(row.id),
+    auction_id: row.auction_id,
+    asker: {
+      id: row.asker_id,
+      name: row.asker_name || '',
+    },
+    body: row.body,
+    answer: row.answer || null,
+    answered_at: row.answered_at ? new Date(row.answered_at).toISOString() : null,
+    is_faq: Boolean(row.is_faq),
+    status: row.status,
+    created_at: new Date(row.created_at).toISOString(),
+  };
+}
