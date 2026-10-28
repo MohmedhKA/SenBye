@@ -514,7 +514,11 @@ export async function getMyAuctions(userId: string, role: 'selling' | 'bidding')
   } else {
     querySql = `
       ${AUCTION_BASE_SELECT}
-      WHERE a.id IN (SELECT DISTINCT auction_id FROM bids WHERE bidder_id = $1)
+      WHERE a.id IN (
+        SELECT DISTINCT auction_id FROM bids WHERE bidder_id = $1
+        UNION
+        SELECT DISTINCT auction_id FROM auto_bids WHERE bidder_id = $1
+      )
       ORDER BY a.closes_at ASC
     `;
   }

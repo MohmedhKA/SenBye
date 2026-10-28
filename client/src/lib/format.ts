@@ -41,3 +41,36 @@ export function formatRelativeTime(dateStr: string): string {
   const diffDays = Math.floor(diffHours / 24);
   return `${diffDays}d ago`;
 }
+
+export function formatCondition(condition: string): string {
+  const map: Record<string, string> = {
+    new: 'Brand New',
+    like_new: 'Like New',
+    good: 'Good',
+    fair: 'Fair',
+    poor: 'Usable',
+  };
+  return map[condition] || condition;
+}
+
+export function formatCategory(cat: string): string {
+  const map: Record<string, string> = {
+    cycle: 'Cycles',
+    calculator: 'Calculators',
+    textbook: 'Textbooks',
+    hostel_gear: 'Hostel Gear',
+    electronics: 'Electronics',
+    lab_equipment: 'Lab Equipment',
+    other: 'Other',
+  };
+  return map[cat] || cat.replace(/_/g, ' ');
+}
+
+export function photoUrl(photoName: string | null | undefined): string {
+  if (!photoName) return '/placeholder.png';
+  if (photoName.startsWith('http://') || photoName.startsWith('https://') || photoName.startsWith('/')) {
+    return photoName;
+  }
+  return `/uploads/${photoName}`;
+}
+
