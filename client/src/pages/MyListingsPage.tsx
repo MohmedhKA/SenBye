@@ -205,6 +205,24 @@ export function MyListingsPage() {
                     </>
                   )}
 
+                  {item.status === 'pending_approval' && (
+                    <Link
+                      to={`/auctions/${item.id}`}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-300 rounded-lg transition-colors"
+                    >
+                      ⚖️ Review Bid
+                    </Link>
+                  )}
+
+                  {item.status === 'reserved' && (
+                    <Link
+                      to={`/auctions/${item.id}`}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-blue-900 bg-blue-100 hover:bg-blue-200 border border-blue-300 rounded-lg transition-colors"
+                    >
+                      🤝 Coordinate Handover
+                    </Link>
+                  )}
+
                   {canRelist && (
                     <button
                       onClick={() => {

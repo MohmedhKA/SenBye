@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { Countdown } from '../components/Countdown.js';
 import { BidPanel } from '../components/BidPanel.js';
 import { BidHistory } from '../components/BidHistory.js';
+import { SellerActions } from '../components/SellerActions.js';
 import { formatRupees, formatCondition, formatCategory, formatRelativeTime, photoUrl } from '../lib/format.js';
 
 export function AuctionPage() {
@@ -220,6 +221,13 @@ export function AuctionPage() {
               </div>
             </div>
           </div>
+
+          {/* Interactive Sale & Handover Workflow (Milestone M3) */}
+          <SellerActions
+            auction={auction}
+            currentUser={user}
+            onActionComplete={fetchDetail}
+          />
 
           {/* Outcome & Contact Card (if closed) */}
           {auction.status !== 'open' && (
