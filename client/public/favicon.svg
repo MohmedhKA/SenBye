@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <rect width="128" height="128" rx="28" fill="#FFFFFF"/>
+  <!-- S-curve (Blue) -->
+  <path
+    d="M58 36 C58 26 48 20 37 20 C24 20 16 29 16 41 C16 54 28 60 42 65 C54 69 66 75 66 87 C66 99 55 108 41 108 C26 108 17 98 17 87"
+    stroke="#2563EB"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- b-curve & stem (Orange) -->
+  <path
+    d="M72 20 V108 M72 64 C77 56 86 52 96 52 C110 52 118 63 118 78 C118 94 108 106 94 106 C84 106 75 101 72 92"
+    stroke="#F97316"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

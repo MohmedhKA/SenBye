@@ -2,6 +2,24 @@
 
 @layer base {
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Plus Jakarta Sans', Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
+}
+
+@keyframes flashBid {
+  0% { background-color: rgba(249, 115, 22, 0.25); }
+  100% { background-color: transparent; }
+}
+
+.bid-flash {
+  animation: flashBid 1.2s ease-out;
+}
+
+/* Custom scrollbars for clean campus feel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

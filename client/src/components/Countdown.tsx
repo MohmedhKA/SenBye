@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCountdown } from '../lib/clock.js';
+import { Clock, Zap } from 'lucide-react';
 
 interface CountdownProps {
   closesAt: string;
@@ -15,41 +16,46 @@ export const Countdown: React.FC<CountdownProps> = ({
   const { formatted, isClosed, isEndingSoon, isExtensionWindow } = useCountdown(closesAt);
 
   if (compact) {
-    let colorClass = 'text-gray-700 bg-gray-100';
+    let colorClass = 'text-slate-700 bg-slate-100';
     if (isClosed) {
-      colorClass = 'text-gray-500 bg-gray-100';
+      colorClass = 'text-slate-500 bg-slate-100';
     } else if (isExtensionWindow) {
-      colorClass = 'text-red-700 bg-red-100 font-bold animate-pulse';
+      colorClass = 'text-orange-900 bg-orange-100 font-bold animate-pulse ring-1 ring-orange-400';
     } else if (isEndingSoon) {
-      colorClass = 'text-amber-700 bg-amber-100 font-semibold';
+      colorClass = 'text-amber-800 bg-amber-100 font-semibold';
     }
 
     return (
       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs ${colorClass}`}>
-        <span>⏱️</span>
+        <Clock className="w-3.5 h-3.5" />
         <span>{formatted}</span>
       </span>
     );
   }
 
-  let statusBg = 'bg-blue-50 border-blue-200 text-blue-900';
+  let statusBg = 'bg-blue-50/80 border-blue-200 text-blue-950';
   if (isClosed) {
-    statusBg = 'bg-gray-100 border-gray-300 text-gray-600';
+    statusBg = 'bg-slate-100 border-slate-300 text-slate-600';
   } else if (isExtensionWindow) {
-    statusBg = 'bg-red-50 border-red-300 text-red-900 ring-2 ring-red-400';
+    statusBg = 'bg-orange-50 border-orange-400 text-orange-950 ring-2 ring-orange-400/80 shadow-md';
   } else if (isEndingSoon) {
-    statusBg = 'bg-amber-50 border-amber-300 text-amber-900';
+    statusBg = 'bg-amber-50 border-amber-300 text-amber-950';
   }
 
   return (
-    <div className={`p-4 rounded-xl border ${statusBg} flex flex-col sm:flex-row items-center justify-between gap-3`} aria-live="polite">
-      <div className="flex items-center gap-2">
-        <span className="text-2xl">⏳</span>
+    <div
+      className={`p-5 rounded-2xl border ${statusBg} flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs transition-all`}
+      aria-live="polite"
+    >
+      <div className="flex items-center gap-3">
+        <div className={`p-2.5 rounded-xl ${isExtensionWindow ? 'bg-orange-600 text-white animate-bounce' : 'bg-blue-600 text-white'}`}>
+          {isExtensionWindow ? <Zap className="w-6 h-6" /> : <Clock className="w-6 h-6" />}
+        </div>
         <div>
-          <div className="text-xs uppercase font-bold tracking-wider opacity-75">
-            {isClosed ? 'Status' : 'Time Remaining'}
+          <div className="text-[11px] uppercase font-bold tracking-wider opacity-75">
+            {isClosed ? 'Auction Concluded' : 'Official Time Remaining'}
           </div>
-          <div className="text-2xl font-black font-mono">
+          <div className="text-3xl font-black font-mono tracking-tight">
             {formatted}
           </div>
         </div>
@@ -57,13 +63,14 @@ export const Countdown: React.FC<CountdownProps> = ({
 
       <div className="flex flex-wrap items-center gap-2">
         {extensionCount > 0 && (
-          <span className="px-2 py-1 bg-amber-200 text-amber-900 text-xs font-bold rounded-md">
+          <span className="px-2.5 py-1 bg-amber-100 border border-amber-300 text-amber-900 text-xs font-bold rounded-lg shadow-2xs">
             Extended {extensionCount}x
           </span>
         )}
         {isExtensionWindow && (
-          <span className="px-2 py-1 bg-red-600 text-white text-xs font-bold rounded-md animate-pulse">
-            ⚡ 30s Anti-Sniping Window (+60s per bid)
+          <span className="px-3 py-1 bg-orange-600 text-white text-xs font-bold rounded-lg animate-pulse shadow-sm flex items-center gap-1">
+            <Zap className="w-3.5 h-3.5" />
+            <span>&lt;30s Anti-Snipe (+60s per bid)</span>
           </span>
         )}
       </div>
