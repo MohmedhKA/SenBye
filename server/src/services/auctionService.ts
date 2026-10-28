@@ -8,6 +8,7 @@ import {
   type RawBidRow,
   type RawAutoBidRow,
 } from '../dto/mappers.js';
+import { matchWantsForNewAuction } from './wantsService.js';
 
 export interface CreateAuctionInput {
   title: string;
@@ -135,6 +136,9 @@ export async function createAuction(
        VALUES ($1, 'created', $2, $3)`,
       [auctionId, sellerId, JSON.stringify({ title: input.title })]
     );
+
+    // 5. Match active wants of other users (Rule W2)
+    await matchWantsForNewAuction(auctionId, client);
 
     // Fetch full row and map
     const { rows: fullRows } = await client.query(

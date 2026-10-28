@@ -21,7 +21,7 @@ export const config = {
   clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
   allowedEmailDomain: process.env.ALLOWED_EMAIL_DOMAIN || '',
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
-  assistantModel: process.env.ASSISTANT_MODEL || 'claude-sonnet-5-5',
+  assistantModel: process.env.ASSISTANT_MODEL || '',
 
   rules: {
     // Listing rules (L2)

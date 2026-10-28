@@ -148,3 +148,25 @@ export function toAuctionDetail(
     server_time: new Date().toISOString(),
   };
 }
+
+export interface WantDTO {
+  id: number;
+  keywords: string;
+  category: string | null;
+  max_price: number;
+  active: boolean;
+  created_at: string;
+  matches_count: number;
+}
+
+export function toWant(row: any): WantDTO {
+  return {
+    id: Number(row.id),
+    keywords: row.keywords,
+    category: row.category || null,
+    max_price: Number(row.max_price),
+    active: Boolean(row.active),
+    created_at: new Date(row.created_at).toISOString(),
+    matches_count: row.matches_count !== undefined ? Number(row.matches_count) : 0,
+  };
+}

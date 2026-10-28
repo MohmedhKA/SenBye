@@ -102,6 +102,7 @@ export interface Want {
   max_price: number;
   active: boolean;
   created_at: string;
+  matches_count?: number;
 }
 
 export interface NotificationItem {
