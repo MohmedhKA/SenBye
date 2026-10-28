@@ -115,6 +115,13 @@ export interface NotificationItem {
   read_at: string | null;
 }
 
+export interface AssistantMessage {
+  id: number;
+  role: 'user' | 'assistant';
+  content: string;
+  created_at: string;
+}
+
 export interface AssistantProposal {
   id: string;
   auction_id: string;
@@ -122,4 +129,5 @@ export interface AssistantProposal {
   summary: string;
   status: 'pending' | 'confirmed' | 'cancelled' | 'expired';
   created_at: string;
+  decided_at?: string | null;
 }
