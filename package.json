@@ -1,0 +1,20 @@
+{
+  "name": "senbye",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "db:setup": "bash scripts/setup-db.sh",
+    "db:migrate": "npm --workspace=server run db:migrate",
+    "db:seed": "npm --workspace=server run db:seed",
+    "dev": "concurrently \"npm --workspace=server run dev\" \"npm --workspace=client run dev\"",
+    "test": "npm --workspace=server run test",
+    "typecheck": "npm --workspace=server run typecheck && npm --workspace=client run typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
